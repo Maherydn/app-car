@@ -15,23 +15,15 @@ import {
 } from "@material-tailwind/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { authorsTableData, projectsTableData, carsTableData} from "@/data";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CarModal } from "@/modals/carCard";
 import EditCarForm from "@/modals/editCarModal";
+import CarDetails from "@/layouts/detail";
+import { useNavigate } from "react-router-dom";
 
 export function Tables() {
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCarModalOpen, setIsCarModalOpen] = useState(false);
-
-  const car = {
-    brand: "BMW",
-    model: "X5",
-    year: 2022,
-    registration_number: "MN012OP",
-    company_id: 1,
-  };
   
+  const navigate = useNavigate();
   const handleFormSubmit = (updatedCar) => {
     console.log("Données mises à jour :", updatedCar);
     setIsModalOpen(false);
@@ -67,111 +59,121 @@ export function Tables() {
               </tr>
             </thead>
             <tbody>
-              {carsTableData.map(
-                ( carTableData, key) => {
-                  const className = `py-3 px-5 ${
-                    key === projectsTableData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+            {carsTableData.map((carTableData, key) => {
+              const className = `py-3 px-5 ${
+                key === carsTableData.length - 1 ? "" : "border-b border-blue-gray-50"
+              }`;
 
-                  return (
-                    <tr key={key}>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
+              const [isCarModalOpen, setIsCarModalOpen] = React.useState(false);
+              const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+
+              return (
+                <React.Fragment key={key}>
+                  <tr 
+                    onClick={() => navigate(`/dashboard/tables/1`)} 
+                    className="hover:bg-blue-gray-100 duration-500 cursor-pointer"
+                  >
+                    <td className={className}>
+                      <div className="flex items-center gap-4">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-bold"
+                        >
+                          {carTableData.brand}
+                        </Typography>
+                      </div>
+                    </td>
+                    <td className={className}>
+                      <div className="flex items-center gap-4">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-bold"
+                        >
+                          {carTableData.model}
+                        </Typography>
+                      </div>
+                    </td>
+                    <td className={className}>
+                      <div className="flex items-center gap-4">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-bold"
+                        >
+                          {carTableData.registration_number}
+                        </Typography>
+                      </div>
+                    </td>
+                    <td className={className}>
+                      <Chip
+                        variant="gradient"
+                        color={carTableData.available ? "green" : "blue-gray"}
+                        value={carTableData.available ? "available" : "not available"}
+                        className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                      />
+                    </td>
+                    <td className={className}>
+                      <Menu>
+                        <MenuHandler>
                           <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
+                            as="a"
+                            href="#"
+                            className="text-xs font-semibold text-blue-gray-600"
                           >
-                            {carTableData.brand}
+                            <EllipsisVerticalIcon
+                              strokeWidth={2}
+                              className="h-5 w-5 text-inherit"
+                            />
                           </Typography>
-                        </div>
-                      </td>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {carTableData.model}
-                            </Typography>
-                          </div>
-                      </td>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
-                            >
-                            {carTableData.registration_number}
-                          </Typography>
-                        </div>
-                      </td>
-                        <td className={className}>
-                        <Chip
-                          variant="gradient"
-                          color={carTableData.available ? "green" : "blue-gray"}
-                          value={carTableData.available ? "available" : "not avaliable"}
-                          className="py-0.5 px-2 text-[11px] font-medium w-fit"
-                          />
-                      </td>
-                      <td className={className}>
-                        <Menu>
-                          <MenuHandler>
-                            <Typography
-                              as="a"
-                              href="#"
-                              className="text-xs font-semibold text-blue-gray-600"
-                            >
-                              <EllipsisVerticalIcon
-                                strokeWidth={2}
-                                className="h-5 w-5 text-inherit"
-                              />
-                            </Typography>
-                          </MenuHandler>
-                          <MenuList className="py-1">
-                            <MenuItem 
-                              className="text-sm" 
-                              onClick={() => setIsCarModalOpen(true)}
-                            >
-                              Voir les détails
-                            </MenuItem>
-                            <MenuItem 
-                              className="text-sm"
-                              onClick={() => setIsModalOpen(true)}
-                            >
-                              Modifier
-                            </MenuItem>
-                            <MenuItem className="text-sm text-red-500">Supprimer</MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
+                        </MenuHandler>
+                        <MenuList className="py-1">
+                          <MenuItem
+                            className="text-sm"
+                            onClick={() => setIsCarModalOpen(true)}
+                          >
+                            Voir les détails
+                          </MenuItem>
+                          <MenuItem
+                            className="text-sm"
+                            onClick={() => setIsEditModalOpen(true)}
+                          >
+                            Modifier
+                          </MenuItem>
+                          <MenuItem className="text-sm text-red-500">Supprimer</MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </td>
+                  </tr>
+
+                  {isCarModalOpen && (
+                    <CarModal
+                      car={carTableData}
+                      isOpen={isCarModalOpen}
+                      onClose={() => setIsCarModalOpen(false)}
+                    />
+                  )}
+
+                  {isEditModalOpen && (
+                    <EditCarForm
+                      car={carTableData}
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                      onSubmit={handleFormSubmit}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            })}
+
             </tbody>
           </table>
-          <CarModal
-            car={car}
-            isOpen={isCarModalOpen}
-            onClose={() => setIsCarModalOpen(false)}
-          />
-
-          <EditCarForm
-            car={car}
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSubmit={handleFormSubmit}
-          />
 
         </CardBody>
       </Card>
 
-      <Card>
+      {/* <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
             Driver
@@ -260,7 +262,8 @@ export function Tables() {
             </tbody>
           </table>
         </CardBody>
-      </Card>
+      </Card> */}
+      {/* <CarDetails/> */}
     </div>
   );
 }

@@ -33,7 +33,7 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
-    onClose(); // Ferme le modal après la soumission
+    onClose(); 
   };
 
   if (!isOpen) return null;
