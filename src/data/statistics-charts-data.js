@@ -1,12 +1,12 @@
 import { chartsConfig } from "@/configs";
 
-const websiteViewsChart = {
+const vehicleRepairsChart = {
   type: "bar",
   height: 220,
   series: [
     {
-      name: "Views",
-      data: [50, 20, 10, 22, 50, 10, 40],
+      name: "Repairs",
+      data: [15, 12, 18, 20, 22, 17, 25], 
     },
   ],
   options: {
@@ -20,23 +20,23 @@ const websiteViewsChart = {
     },
     xaxis: {
       ...chartsConfig.xaxis,
-      categories: ["M", "T", "W", "T", "F", "S", "S"],
+      categories: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], 
     },
   },
 };
 
-const dailySalesChart = {
+const repairRevenueChart = {
   type: "line",
   height: 220,
   series: [
     {
-      name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+      name: "Revenue",
+      data: [1200, 1500, 1300, 1800, 1600, 1900, 1700],
     },
   ],
   options: {
     ...chartsConfig,
-    colors: ["#0288d1"],
+    colors: ["#0288d1"], // Couleur bleue pour les revenus
     stroke: {
       lineCap: "round",
     },
@@ -45,33 +45,23 @@ const dailySalesChart = {
     },
     xaxis: {
       ...chartsConfig.xaxis,
-      categories: [
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], 
     },
   },
 };
 
-const completedTaskChart = {
+const completedMaintenanceTasksChart = {
   type: "line",
   height: 220,
   series: [
     {
-      name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+      name: "Tasks Completed",
+      data: [5, 8, 7, 10, 6, 9, 11], 
     },
   ],
   options: {
     ...chartsConfig,
-    colors: ["#388e3c"],
+    colors: ["#388e3c"], 
     stroke: {
       lineCap: "round",
     },
@@ -80,51 +70,32 @@ const completedTaskChart = {
     },
     xaxis: {
       ...chartsConfig.xaxis,
-      categories: [
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], 
     },
   },
-};
-const completedTasksChart = {
-  ...completedTaskChart,
-  series: [
-    {
-      name: "Tasks",
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-    },
-  ],
 };
 
 export const statisticsChartsData = [
   {
     color: "white",
-    title: "Website View",
-    description: "Last Campaign Performance",
-    footer: "campaign sent 2 days ago",
-    chart: websiteViewsChart,
+    title: "Réparations de véhicules",
+    description: "Performance des réparations effectuées",
+    footer: "campagne envoyée il y a 2 jours",
+    chart: vehicleRepairsChart,
   },
   {
     color: "white",
-    title: "Daily Sales",
-    description: "15% increase in today sales",
-    footer: "updated 4 min ago",
-    chart: dailySalesChart,
+    title: "Revenus des réparations",
+    description: "Augmentation de 15% des revenus d'entretien aujourd'hui",
+    footer: "mis à jour il y a 4 minutes",
+    chart: repairRevenueChart,
   },
   {
     color: "white",
-    title: "Completed Tasks",
-    description: "Last Campaign Performance",
-    footer: "just updated",
-    chart: completedTasksChart,
+    title: "Tâches d'entretien complétées",
+    description: "Performance des tâches d'entretien complétées",
+    footer: "juste mis à jour",
+    chart: completedMaintenanceTasksChart,
   },
 ];
 
