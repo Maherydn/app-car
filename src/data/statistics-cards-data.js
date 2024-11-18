@@ -1,53 +1,40 @@
-import {
-  BanknotesIcon,
-  UserPlusIcon,
-  UsersIcon,
-  ChartBarIcon,
-} from "@heroicons/react/24/solid";
+import { CalendarIcon, WrenchIcon, CheckCircleIcon, TruckIcon } from "@heroicons/react/24/solid";
 
 export const statisticsCardsData = [
   {
-    color: "gray",
-    icon: BanknotesIcon,
-    title: "Today's Money",
-    value: "$53k",
+    icon: TruckIcon,
+    title: "Véhicules en entretien",
+    value: 120,
     footer: {
-      color: "text-green-500",
-      value: "+55%",
-      label: "than last week",
+      value: 3,
+      label: "par rapport à hier",
     },
   },
   {
-    color: "gray",
-    icon: UsersIcon,
-    title: "Today's Users",
-    value: "2,300",
+    icon: CalendarIcon, 
+    title: "Maintenances/mois",
+    value: 150,
     footer: {
-      color: "text-green-500",
-      value: "+3%",
-      label: "than last month",
+      value: 5,
+      label: "par rapport au mois dernier",
     },
   },
   {
-    color: "gray",
-    icon: UserPlusIcon,
-    title: "New Clients",
-    value: "3,462",
+    icon: WrenchIcon,
+    title: "Véhicules à réparer",
+    value: 30,
     footer: {
-      color: "text-red-500",
-      value: "-2%",
-      label: "than yesterday",
+      value: -2,
+      label: "par rapport à hier",
     },
   },
   {
-    color: "gray",
-    icon: ChartBarIcon,
-    title: "Sales",
-    value: "$103,430",
+    icon: CheckCircleIcon, 
+    title: "Véhicules ok",
+    value: 90,
     footer: {
-      color: "text-green-500",
-      value: "+5%",
-      label: "than yesterday",
+      value: 1,
+      label: "par rapport à hier",
     },
   },
 ];
