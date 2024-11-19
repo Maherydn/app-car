@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import {
-  Input,
-  Button,
-} from "@material-tailwind/react"; // Importation des composants Material Tailwind
+import { Input, Button, Select, Option } from "@material-tailwind/react";
 
 const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -11,14 +8,20 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
     model: car.model || "",
     year: car.year || "",
     registration_number: car.registration_number || "",
+    mileage: car.mileage || "",
+    fuel_type: car.fuel_type || "",
+    transmission: car.transmission || "",
     available: car.available || false,
+    carte_grise: car.carte_grise || "",
+    visite_technique_date: car.visite_technique_date || "",
+    visite_technique_file: car.visite_technique_file || null,
   });
 
   const firstInputRef = useRef(null);
 
   useEffect(() => {
     if (isOpen && firstInputRef.current) {
-      firstInputRef.current.focus();  // Mettre le focus sur le premier champ input
+      firstInputRef.current.focus(); // Set focus on the first input field
     }
   }, [isOpen]);
 
@@ -30,10 +33,18 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files[0], // Save the first file chosen
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose(); 
+    onSubmit(formData); // Pass the data to the parent
+    onClose(); // Close the modal
   };
 
   if (!isOpen) return null;
@@ -44,28 +55,28 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg animate__animated animate__fadeIn animate__faster"
-        onClick={(e) => e.stopPropagation()} // Empêche la fermeture si on clique à l'intérieur du modal
+        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto max-h-[80vh] animate__animated animate__fadeIn animate__faster"
+        onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
       >
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Modifier les informations de la voiture
+          Edit Car Information
         </h2>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <div>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+          <div className="mb-4">
             <Input
-              label="Marque"
+              label="Brand"
               name="brand"
               value={formData.brand}
               onChange={handleChange}
               required
               ref={firstInputRef}
-              color="indigo" // Définir la couleur comme indigo pour se rapprocher du style Material
+              color="indigo"
             />
           </div>
 
-          <div>
+          <div className="mb-4">
             <Input
-              label="Modèle"
+              label="Model"
               name="model"
               value={formData.model}
               onChange={handleChange}
@@ -74,9 +85,9 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          <div>
+          <div className="mb-4">
             <Input
-              label="Année"
+              label="Year"
               name="year"
               type="number"
               value={formData.year}
@@ -86,9 +97,9 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          <div>
+          <div className="mb-4">
             <Input
-              label="Numéro d'immatriculation"
+              label="Registration Number"
               name="registration_number"
               value={formData.registration_number}
               onChange={handleChange}
@@ -97,7 +108,83 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          <div className="flex items-center gap-2 mt-4">
+          <div className="mb-4">
+            <Input
+              label="Mileage (km)"
+              name="mileage"
+              type="number"
+              value={formData.mileage}
+              onChange={handleChange}
+              required
+              color="indigo"
+            />
+          </div>
+
+          <div className="mb-4">
+            <Select
+              label="Fuel Type"
+              name="fuel_type"
+              value={formData.fuel_type}
+              onChange={(value) => setFormData({ ...formData, fuel_type: value })}
+              required
+              color="indigo"
+            >
+              <Option value="diesel">Diesel</Option>
+              <Option value="petrol">Petrol</Option>
+              <Option value="electric">Electric</Option>
+              <Option value="hybrid">Hybrid</Option>
+            </Select>
+          </div>
+
+          <div className="mb-4">
+            <Select
+              label="Transmission"
+              name="transmission"
+              value={formData.transmission}
+              onChange={(value) => setFormData({ ...formData, transmission: value })}
+              required
+              color="indigo"
+            >
+              <Option value="manual">Manual</Option>
+              <Option value="automatic">Automatic</Option>
+            </Select>
+          </div>
+
+          <div className="mb-4">
+            <Input
+              label="Carte Grise Number"
+              name="carte_grise"
+              value={formData.carte_grise}
+              onChange={handleChange}
+              required
+              color="indigo"
+            />
+          </div>
+
+          <div className="mb-4">
+            <Input
+              label="Visite Technique Date"
+              name="visite_technique_date"
+              type="date"
+              value={formData.visite_technique_date}
+              onChange={handleChange}
+              required
+              color="indigo"
+            />
+          </div>
+
+          <div className="mb-4">
+            <input
+              type="file"
+              name="visite_technique_file"
+              onChange={handleFileChange}
+              accept="application/pdf"
+              className="block w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-md"
+            />
+            <p className="text-sm text-gray-500">Upload Visite Technique File (PDF)</p>
+          </div>
+
+          <div className="mb-4 flex items-center gap-2">
             <input
               id="available"
               type="checkbox"
@@ -107,7 +194,7 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
               className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             />
             <label htmlFor="available" className="text-sm text-gray-700">
-              Disponible
+              Available
             </label>
           </div>
 
@@ -117,14 +204,14 @@ const EditCarForm = ({ car, isOpen, onClose, onSubmit }) => {
               color="gray"
               className="px-4 py-2 text-gray-500 rounded-md shadow-sm hover:bg-gray-400 hover:text-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
-              Annuler
+              Cancel
             </Button>
             <Button
               type="submit"
               color="indigo"
-              className="px-4 py-2 text-white rounded-md shadow-md hover:bg-indigo-800  focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="px-4 py-2 text-white rounded-md shadow-md hover:bg-indigo-800 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Enregistrer
+              Save Changes
             </Button>
           </div>
         </form>

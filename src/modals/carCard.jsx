@@ -6,7 +6,7 @@ export const CarModal = ({ car, isOpen, onClose }) => {
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="max-w-sm bg-gray-200 border border-gray-300 rounded-lg shadow-md shadow-gray-400 p-5 relative">
+      <div className="max-w-sm bg-gray-100 border border-gray-300 rounded-lg shadow-md shadow-gray-400 p-5 relative">
         <button
           className="absolute top-2 right-4 bg-white text-red-500 hover:bg-red-500 hover:text-white px-1.5 rounded-lg text-sm font-bold duration-200 border border-red-500 "
           onClick={onClose}
@@ -24,8 +24,8 @@ export const CarModal = ({ car, isOpen, onClose }) => {
           {car.registration_number}
         </p>
         <p className="mt-2 text-sm text-gray-700">
-          <span className="font-semibold">ID de l'entreprise :</span>{" "}
-          {car.company_id}
+          <span className="font-semibold">Status :</span>{" "}
+          {car.available ? "Available" : "Not Available"}
         </p>
       </div>
     </div>,

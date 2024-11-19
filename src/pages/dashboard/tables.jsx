@@ -103,14 +103,23 @@ export function Tables() {
                       <td className={className}>
                         <Chip
                           variant="gradient"
-                          color={carTableData.available ? "teal" : "blue-gray"}
-                          value={carTableData.available ? "Available" : "Not Available"}
-                          className={`py-1 px-3 text-xs font-semibold w-fit rounded-full shadow-md tracking-wide  
-                            ${
-                              carTableData.available
-                                ? "bg-teal-700 text-white"
-                                : "bg-blue-gray-500 text-gray-100"
-                            }`}
+                          color={
+                            carTableData.status === "ok"
+                              ? "teal"
+                              : carTableData.status === "in repair"
+                              ? "red"
+                              : carTableData.status === "in service"
+                              ? "blue"
+                              : "blue-gray"
+                          }
+                          value={carTableData.status}
+                          className={`py-1 px-3 text-xs font-semibold w-fit rounded-full shadow-md tracking-wide ${
+                            carTableData.status  === "in repair"
+                              ? "bg-red-600 text-white"
+                              : carTableData.status === "in service"
+                              ? "bg-blue-600 text-white"
+                              : "bg-blue-gray-500 text-gray-100"
+                          }`}
                         />
                       </td>
                       <td className={className}>
@@ -124,13 +133,13 @@ export function Tables() {
                           <MenuList className="py-1">
                             <MenuItem
                               className="text-sm"
-                              onClick={() => setIsCarModalOpen(true)}
+                              onClick={(e) => {e.stopPropagation(); setIsCarModalOpen(true)}}
                             >
                               Voir les détails
                             </MenuItem>
                             <MenuItem
                               className="text-sm"
-                              onClick={() => setIsEditModalOpen(true)}
+                              onClick={(e) =>{e.stopPropagation(); setIsEditModalOpen(true)} }
                             >
                               Modifier
                             </MenuItem>
