@@ -4,9 +4,6 @@ import {
   CardBody,
   CardHeader,
   Typography,
-  Avatar,
-  Tooltip,
-  Button,
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 
