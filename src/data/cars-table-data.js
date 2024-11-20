@@ -1,7 +1,7 @@
 export const carsTableData = [
   {
     id: 1,
-    brand: "TOTO",
+    brand: "toto",
     model: "Corolla",
     year: 2020,
     registration_number: "AB123CD",
