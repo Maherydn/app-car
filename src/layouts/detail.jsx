@@ -56,9 +56,20 @@ export default function CarDetailsPage() {
       cell: (row) => (
         <Button
           onClick={() => setIsEditMaintenanceModalOpen(true)}
+         // onClick={() => console.log(row)}
           className="p-2 bg-teal-500 text-white rounded"
+          //bgColor="black"
         >
           Modifier
+        
+          
+          <EditMaintenanceForm
+            maintenance={row}
+            isOpen={isEditMaintenanceModalOpen}
+            onClose={() => setIsEditMaintenanceModalOpen(false)}
+            onSubmit={updateMaintenance}
+          />
+          
         </Button>
       ),
       ignoreRowClick: true,
@@ -186,13 +197,14 @@ export default function CarDetailsPage() {
       </section>
 
       {/* Edit Maintenance Modal */}
-      {isEditMaintenanceModalOpen && (
+      {/*isEditMaintenanceModalOpen && (
         <EditMaintenanceForm
+          maintenance={row}
           isOpen={isEditMaintenanceModalOpen}
           onClose={() => setIsEditMaintenanceModalOpen(false)}
           onSubmit={updateMaintenance}
         />
-      )}
+      )*/}
 
       {/* Footer Edit Button */}
       <footer className="mt-8">

@@ -40,6 +40,8 @@ const EditMaintenanceForm = ({ maintenance, isOpen, onClose, onSubmit }) => {
     <div
       className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
       onClick={onClose}
+      //id={maintenance.maintenance_id}
+      //id={}
     >
       <div
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto max-h-[80vh]"
