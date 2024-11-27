@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { TruckIcon, PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { TruckIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { Button } from "@material-tailwind/react";
-import DataTable from "react-data-table-component";
+import { Select, Option, Button } from "@material-tailwind/react";
 import EditMaintenanceForm from "@/modals/editMaintenanceForm";
 import CreateMaintenanceForm from "@/modals/createMaintenanceForm";
 import EditCarForm from "@/modals/editCarModal";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import DataTable from "react-data-table-component";
 
 export default function CarDetailsPage() {
   const carTableData = {
@@ -23,22 +24,32 @@ export default function CarDetailsPage() {
     visite_technique_file: "visite_technique.pdf",
   };
 
+  const car = { ...carTableData };
+
   const maintenanceData = [
-    { maintenance_id: 1, maintenance_type: "Oil Change", maintenance_date: "2024-11-10", comments: "Routine oil change" },
-    { maintenance_id: 2, maintenance_type: "Tire Replacement", maintenance_date: "2024-11-15", comments: "Replaced all four tires" },
+    { maintenance_id: 1, car: "Toyota", maintenance_type: "Oil Change", maintenance_date: "2024-11-10", comments: "Routine oil change" },
+    { maintenance_id: 2, car: "Toyota", maintenance_type: "Tire Replacement", maintenance_date: "2024-11-15", comments: "Replaced all four tires" },
+    { maintenance_id: 3, car: "Honda", maintenance_type: "Brake Inspection", maintenance_date: "2024-11-20", comments: "Brake pads checked and cleaned" },
+    { maintenance_id: 4, car: "Ford", maintenance_type: "Battery Replacement", maintenance_date: "2024-11-22", comments: "Replaced with a new battery" },
+    { maintenance_id: 5, car: "Nissan", maintenance_type: "Alignment", maintenance_date: "2024-11-25", comments: "Wheel alignment done" },
   ];
 
-  // States pour chaque modal
-  const [isEditCarModalOpen, setIsEditCarModalOpen] = useState(false);
-  const [isEditMaintenanceModalOpen, setIsEditMaintenanceModalOpen] = useState(false);
-  const [isCreateMaintenanceModalOpen, setIsCreateMaintenanceModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [createMaintenanceForm, setCreatetMaintenanceForm] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+  const [editMaintenanceForm, setEditMaintenanceForm] = useState(false);
+  const [selectedMaintenance, setSelectedMaintenance] = useState(null);
 
-  const [searchText, setSearchText] = useState("");
+  const updateMaintenance = (data) => {
+    console.log("Updated maintenance data:", data);
+  };
+
+  const updateCar = (data) => {
+    console.log("Updated car data:", data);
+  };
 
   const columns = [
     {
-      name: "Maintenance Type",
+      name: "Type",
       selector: (row) => row.maintenance_type,
       sortable: true,
     },
@@ -50,51 +61,23 @@ export default function CarDetailsPage() {
     {
       name: "Comments",
       selector: (row) => row.comments,
-      sortable: true,
+      sortable: false,
     },
     {
+      name: "Actions",
       cell: (row) => (
         <Button
-          onClick={() => setIsEditMaintenanceModalOpen(true)}
-         // onClick={() => console.log(row)}
+          onClick={() => {
+            setEditMaintenanceForm(true);
+            setSelectedMaintenance(row);
+          }}
           className="p-2 bg-teal-500 text-white rounded"
-          //bgColor="black"
         >
           Modifier
-        
-          
-          <EditMaintenanceForm
-            maintenance={row}
-            isOpen={isEditMaintenanceModalOpen}
-            onClose={() => setIsEditMaintenanceModalOpen(false)}
-            onSubmit={updateMaintenance}
-          />
-          
         </Button>
       ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
     },
   ];
-
-  const updateMaintenance = (data) => {
-    console.log("Updated maintenance data:", data);
-  };
-
-  const updateCar = (data) => {
-    console.log("Updated car data:", data);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-  };
-
-  const filteredMaintenanceData = maintenanceData.filter(
-    (item) =>
-      item.maintenance_type.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.comments.toLowerCase().includes(searchText.toLowerCase())
-  );
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -102,109 +85,82 @@ export default function CarDetailsPage() {
       <header className="mb-8 relative">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
           <TruckIcon className="h-6 w-6 text-blue-500" />
-          {carTableData.brand} {carTableData.model} ({carTableData.year})
+          {car.brand} {car.model} ({car.year})
         </h1>
-        <p className="text-sm text-gray-500">
-          Registration: {carTableData.registration_number}
-        </p>
+        <p className="text-sm text-gray-500">Registration: {car.registration_number}</p>
         <Link to="/dashboard/tables">
-          <button className="absolute -bottom-2 right-0 py-1 px-3 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded-lg flex items-center gap-1">
+          <button className="absolute -bottom-2 right-0 mt-2  mr-4 py-1 px-3 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded-lg flex items-center gap-1">
             <TruckIcon className="h-4 w-4" />
             Back
           </button>
         </Link>
       </header>
 
-      {/* Car Details */}
+      {/* Car Status */}
       <section className="mb-6">
         <h2 className="text-lg font-semibold text-gray-700">Car Details</h2>
         <div className="bg-white shadow rounded-lg p-4">
           <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
             <p>
-              <span className="font-medium">Mileage:</span> {carTableData.mileage}{" "}
-              km
+              <span className="font-medium">Mileage:</span> {car.mileage} km
             </p>
             <p>
-              <span className="font-medium">Fuel Type:</span>{" "}
-              {carTableData.fuel_type}
+              <span className="font-medium">Fuel Type:</span> {car.fuel_type}
             </p>
             <p>
-              <span className="font-medium">Transmission:</span>{" "}
-              {carTableData.transmission}
+              <span className="font-medium">Transmission:</span> {car.transmission}
             </p>
             <p>
-              <span
-                className={`font-medium ${
-                  carTableData.available ? "text-green-600" : "text-red-600"
-                }`}
-              >
+              <span className={`font-medium ${car.available ? "text-green-600" : "text-red-600"}`}>
                 Status:
               </span>{" "}
-              {carTableData.available ? "Available" : "Unavailable"}
+              {car.available ? "Available" : "Unavailable"}
             </p>
           </div>
         </div>
-      
-        {isEditCarModalOpen && (
-          <EditCarForm
-            isOpen={isEditCarModalOpen}
-            onClose={() => setIsEditCarModalOpen(false)}
-            carData={carTableData}
-            onSubmit={updateCar}
-          />
-        )}
       </section>
 
       {/* Maintenance Section */}
       <section className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-700">
-          Maintenance History
-        </h2>
-        <div className="mt-4 mb-4 flex items-center gap-2 w-80">
-          <input
-            type="text"
-            value={searchText}
-            onChange={handleSearchChange}
-            placeholder="Search maintenance..."
-            className="p-2 border border-gray-300 rounded-lg w-full"
+        <h2 className="text-lg font-semibold text-gray-700">Maintenance History</h2>
+        <div className="w-72 mx-auto md:mx-0">
+          <Select label="Choisissez une option">
+            <Option value="assurance">Entretiens</Option>
+            <Option value="reparation">Assurances</Option>
+          </Select>
+        </div>
+
+        <div className="mt-4">
+          <DataTable columns={columns} data={maintenanceData} pagination />
+        </div>
+
+        {editMaintenanceForm && selectedMaintenance && (
+          <EditMaintenanceForm
+            isOpen={editMaintenanceForm}
+            onClose={() => setEditMaintenanceForm(false)}
+            onSubmit={updateMaintenance}
+            maintenance={selectedMaintenance}
           />
-        </div>
-        <div className="mt-4 rounded-lg">
-          <DataTable
-            columns={columns}
-            data={filteredMaintenanceData}
-            pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[5, 10, 20]}
-          />
-        </div>
-        <div className="flex justify-center items-center mt-4">
-          <Button
-            onClick={() => setIsCreateMaintenanceModalOpen(true)}
-            className="mt-4 py-2 px-4 flex items-center justify-center bg-green-500 text-white font-medium text-sm rounded-full shadow hover:bg-green-600 transition gap-2"
-          >
-            <PlusIcon className="h-5 w-5" />
-            Add Maintenance
-          </Button>
-          {isCreateMaintenanceModalOpen && (
-            <CreateMaintenanceForm
-              isOpen={isCreateMaintenanceModalOpen}
-              onClose={() => setIsCreateMaintenanceModalOpen(false)}
-              onSubmit={updateMaintenance}
-            />
-          )}
-        </div>
+        )}
       </section>
 
-      {/* Edit Maintenance Modal */}
-      {/*isEditMaintenanceModalOpen && (
-        <EditMaintenanceForm
-          maintenance={row}
-          isOpen={isEditMaintenanceModalOpen}
-          onClose={() => setIsEditMaintenanceModalOpen(false)}
-          onSubmit={updateMaintenance}
-        />
-      )*/}
+      {/* Create Maintenance */}
+      <div className="flex justify-center items-center mt-4">
+        <Button
+          onClick={() => setCreatetMaintenanceForm(true)}
+          className="mt-4 py-2 px-4 w-auto flex items-center justify-center bg-green-500 text-white font-medium text-sm rounded-full shadow hover:bg-green-600 transition gap-2"
+        >
+          <PlusIcon className="h-5 w-5" />
+          Add Maintenance
+        </Button>
+        {createMaintenanceForm && (
+          <CreateMaintenanceForm
+            isOpen={createMaintenanceForm}
+            onClose={() => setCreatetMaintenanceForm(false)}
+            onSubmit={updateMaintenance}
+          />
+        )}
+      </div>
 
       {/* Footer Edit Button */}
       <footer className="mt-8">
@@ -227,4 +183,3 @@ export default function CarDetailsPage() {
     </div>
   );
 }
-    
